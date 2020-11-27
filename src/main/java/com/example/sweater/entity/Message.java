@@ -1,5 +1,6 @@
 package com.example.sweater.entity;
 
+import com.example.sweater.entity.util.MessageHelper;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -12,9 +13,9 @@ public class Message {
     private Long id;
 
     @NotBlank(message = "Please fill the message")
-    @Length(max=2048, message = "Message to long (more than 2kB)")
+    @Length(max = 2048, message = "Message too long (more than 2kB)")
     private String text;
-    @Length(max=255, message = "Message to long (more than 255)")
+    @Length(max = 255, message = "Message too long (more than 255)")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -22,6 +23,7 @@ public class Message {
     private User author;
 
     private String fileName;
+
     public Message() {
     }
 
@@ -31,16 +33,24 @@ public class Message {
         this.tag = tag;
     }
 
-    public String getAuthorName(){
-        return author != null ? author.getUsername() : "none";
+    public String getAuthorName() {
+        return MessageHelper.getAuthorName(author);
     }
 
     public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(User user) {
-        this.author = user;
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
     }
 
     public Long getId() {
@@ -49,14 +59,6 @@ public class Message {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public String getTag() {
@@ -71,7 +73,7 @@ public class Message {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFileName(String filename) {
+        this.fileName = filename;
     }
 }
